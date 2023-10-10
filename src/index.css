@@ -15,4 +15,18 @@ body {
         hover:opacity-80 transition-all duration-300 ease-in-out;
         ;
     }
+    .btn-outline {
+        @apply   border-[#635fc7] inline-block px-4 py-2   rounded-full text-[#635fc7] text-lg font-semibold bg-gray-100
+        hover:bg-gray-300 hover:text-white transition-all duration-300 ease-in-out;
+
+        ;
+    }
+
+}
+
+.select-status{
+    background-image: url("./assets/icon-chevron-down.svg");
+    appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
 }

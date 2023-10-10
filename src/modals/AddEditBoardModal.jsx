@@ -5,6 +5,7 @@ import boardSlice from "../redux/boardSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 export const AddEditBoardModal = ({ setBoardModalOpen, type }) => {
   const [name, setName] = useState("");
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const [newColumns, setNewColumns] = useState([
     {
@@ -55,6 +56,16 @@ export const AddEditBoardModal = ({ setBoardModalOpen, type }) => {
   const onDelete = (id) => {
     setNewColumns((prev) => prev.filter((column) => column.id !== id));
   };
+
+  if (type === "edit" && isFirstLoad) {
+    setNewColumns(
+      board.columns.map((col) => {
+        return { ...col, id: uuidv4() };
+      })
+    );
+    setName(board.name);
+    setIsFirstLoad(false);
+  }
   return (
     <div
       onClick={(e) => {
