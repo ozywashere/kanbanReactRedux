@@ -5,13 +5,15 @@ import lightIcon from "../assets/icon-light-theme.svg";
 import darkIcon from "../assets/icon-dark-theme.svg";
 import { Switch } from "@headlessui/react";
 import useDarkMode from "../hooks/useDarkMode.js";
-export const HeaderDropdown = ({ setOpenDropdown }) => {
-  const [colorTheme, setColorTheme] = useDarkMode();
+import { useDispatch } from "react-redux";
+export const HeaderDropdown = ({ setOpenDropdown, setBoardModalOpen }) => {
+  const dispatch = useDispatch();
+  const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
   );
   const toggleDarkMode = (checked) => {
-    setColorTheme(colorTheme);
+    setTheme(colorTheme);
     setDarkSide(checked);
   };
 
@@ -39,12 +41,21 @@ export const HeaderDropdown = ({ setOpenDropdown }) => {
               className={`flex items-center space-x-2 px-5 py-4 ${
                 board.isActive && "bg-[#635fc7] rounded-r-full text-white mr-8"
               }`}
+              onClick={() => {
+                dispatch(boardsSlice.actions.setBoardActive({ index }));
+              }}
             >
               <img src={boardIcon} alt="board icon" className="h-4" />
               <p className="text-lg font-bold dark:text-white">{board.name}</p>
             </div>
           ))}
-          <div className="flex items-center space-x-2 text-[#635fc7] px-5 py-4">
+          <div
+            className="flex items-center space-x-2 text-[#635fc7] px-5 py-4 cursor-pointer"
+            onClick={() => {
+              setBoardModalOpen(true);
+              setOpenDropdown(false);
+            }}
+          >
             <img src={boardIcon} className="h-4" alt="boardIcon" />
             <p className="text-lg font-bold">Create New Board</p>
           </div>

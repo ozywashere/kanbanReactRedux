@@ -4,8 +4,16 @@ import iconUp from "../assets/icon-chevron-up.svg";
 import iconDown from "../assets/icon-chevron-down.svg";
 import elipsis from "../assets/icon-vertical-ellipsis.svg";
 import { HeaderDropdown } from "./HeaderDropdown.jsx";
-export const Header = () => {
+import { AddEditBoardModal } from "../modals/AddEditBoardModal.jsx";
+import { useDispatch, useSelector } from "react-redux";
+
+export const Header = ({ setBoardModalOpen, boardModalOpen }) => {
   const [openDropdown, setOpenDropdown] = useState(false);
+
+  const dispatch = useDispatch();
+  const boards = useSelector((state) => state.boards);
+  const board = boards.find((board) => board.isActive === true);
+
   return (
     <div className="p-4 fixed left-0 right-0 bg-white dark:bg-[#2b2c37] z-50">
       <header className="flex justify-between dark:text-white items-center">
@@ -17,7 +25,7 @@ export const Header = () => {
           </h3>
           <div className="flex items-center">
             <h3 className="truncate max-w-[200px] md:text-2xl text-xl font-bold md:ml-20 font-sans">
-              Board Name
+              {board?.name}
             </h3>
             <img
               src={openDropdown ? iconUp : iconDown}
@@ -36,7 +44,16 @@ export const Header = () => {
         </div>
       </header>
       {/*Dropdown*/}
-      {openDropdown && <HeaderDropdown setOpenDropdown={setOpenDropdown} />}
+      {openDropdown && (
+        <HeaderDropdown
+          setOpenDropdown={setOpenDropdown}
+          setBoardModalOpen={setBoardModalOpen}
+        />
+      )}
+
+      {boardModalOpen && (
+        <AddEditBoardModal setBoardModalOpen={setBoardModalOpen} type="add" />
+      )}
     </div>
   );
 };
